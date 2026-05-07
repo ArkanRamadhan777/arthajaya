@@ -19,8 +19,8 @@ export default {
         },
       },
       fontFamily: {
-        heading: ["'Stack Sans Headline'", "sans-serif"],
-        body: ["'Cantarell'", "sans-serif"],
+        heading: ["'Outfit'", "sans-serif"],
+        body: ["'Outfit'", "sans-serif"],
       },
       backgroundImage: {
         'glass': 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02))',

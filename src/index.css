@@ -1,6 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cantarell:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-/* Assuming Stack Sans Headline is imported via Fontsource or similar CDN */
-@import url('https://fonts.cdnfonts.com/css/stack-sans-headline');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 @import "tailwindcss";
 @config "../tailwind.config.js";
