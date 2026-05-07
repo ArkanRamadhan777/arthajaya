@@ -10,6 +10,7 @@ interface AuthState {
   initialized: boolean
   setUser: (user: User | null, profile: UserProfile | null) => void
   initialize: () => Promise<void>
+  signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
 }
 
@@ -42,6 +43,10 @@ export const useAuth = create<AuthState>((set) => ({
         set({ user: null, profile: null, loading: false })
       }
     })
+  },
+  signIn: async (email, password) => {
+    await authService.signIn(email, password)
+    // Profile will be set by the onAuthStateChange listener
   },
   signOut: async () => {
     await authService.signOut()
