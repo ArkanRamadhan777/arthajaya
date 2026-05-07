@@ -3,16 +3,16 @@
 -- Jalankan file ini SATU KALI di SQL Editor Supabase untuk setup seluruh sistem.
 -- =================================================================================
 
--- 1. PEMBERSIHAN (Hapus semua jika sudah ada)
-DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
-DROP TRIGGER IF EXISTS on_profile_created ON public.profiles;
-DROP FUNCTION IF EXISTS public.handle_new_user();
-DROP FUNCTION IF EXISTS public.handle_new_member();
+-- 1. PEMBERSIHAN (Hapus tabel dulu, otomatis menghapus trigger terkait)
 DROP TABLE IF EXISTS public.installments CASCADE;
 DROP TABLE IF EXISTS public.loans CASCADE;
 DROP TABLE IF EXISTS public.savings CASCADE;
 DROP TABLE IF EXISTS public.members CASCADE;
 DROP TABLE IF EXISTS public.profiles CASCADE;
+
+-- Hapus fungsi dan sisa-sisa lainnya
+DROP FUNCTION IF EXISTS public.handle_new_user() CASCADE;
+DROP FUNCTION IF EXISTS public.handle_new_member() CASCADE;
 DROP SEQUENCE IF EXISTS member_number_seq;
 
 -- 2. EKSTENSI & SEQUENCE
