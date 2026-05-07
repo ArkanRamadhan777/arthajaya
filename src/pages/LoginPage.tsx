@@ -1,22 +1,23 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { supabase } from '../lib/supabase'
+import { useAuth } from '../store/useAuth'
 import { Button, Input } from '../components/ui/FormControls'
 import { toast } from 'react-hot-toast'
-import { Lock, Mail, ArrowRight } from 'lucide-react'
+import { Mail, Lock, ArrowRight } from 'lucide-react'
 
 const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  email: z.string().email('Alamat email tidak valid'),
+  password: z.string().min(6, 'Kata sandi minimal 6 karakter'),
 })
 
 type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const { signIn } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
 
   const {
@@ -30,17 +31,11 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
-      })
-
-      if (error) throw error
-      
-      toast.success('Welcome back to ARTHAJAYA!')
+      await signIn(data.email, data.password)
+      toast.success('Selamat datang kembali!')
       navigate('/dashboard')
     } catch (error: any) {
-      toast.error(error.message || 'Failed to login')
+      toast.error(error.message || 'Gagal masuk. Periksa email dan kata sandi Anda.')
     } finally {
       setIsLoading(false)
     }
@@ -50,6 +45,9 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-surface to-surface-dark">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
+          <Link to="/" className="inline-block">
+            <img src="/logo.svg" alt="Logo" className="w-12 h-12 mx-auto mb-4" />
+          </Link>
           <h1 className="text-4xl font-bold text-primary mb-2 tracking-tighter">ARTHAJAYA</h1>
           <p className="text-slate-400">Dashboard Keuangan Koperasi</p>
         </div>
@@ -61,36 +59,26 @@ export default function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="relative group">
-              <div className="absolute left-3 top-[38px] text-slate-500 group-focus-within:text-primary transition-colors">
-                <Mail size={18} />
-              </div>
-              <Input
-                label="Alamat Email"
-                placeholder="nama@contoh.com"
-                className="pl-10"
-                error={errors.email?.message}
-                {...register('email')}
-              />
-            </div>
+            <Input
+              label="Alamat Email"
+              placeholder="nama@contoh.com"
+              leftIcon={<Mail size={18} />}
+              error={errors.email?.message}
+              {...register('email')}
+            />
 
-            <div className="relative group">
-              <div className="absolute left-3 top-[38px] text-slate-500 group-focus-within:text-primary transition-colors">
-                <Lock size={18} />
-              </div>
-              <Input
-                label="Kata Sandi"
-                type="password"
-                placeholder="••••••••"
-                className="pl-10"
-                error={errors.password?.message}
-                {...register('password')}
-              />
-            </div>
+            <Input
+              label="Kata Sandi"
+              type="password"
+              placeholder="••••••••"
+              leftIcon={<Lock size={18} />}
+              error={errors.password?.message}
+              {...register('password')}
+            />
 
             <Button
               type="submit"
-              className="w-full mt-2"
+              className="w-full mt-2 h-12"
               isLoading={isLoading}
             >
               Masuk Sekarang <ArrowRight className="ml-2" size={18} />
@@ -100,9 +88,9 @@ export default function LoginPage() {
           <div className="text-center pt-4">
             <p className="text-sm text-slate-500">
               Belum punya akun?{' '}
-              <button className="text-primary hover:underline font-medium">
-                Hubungi Admin
-              </button>
+              <Link to="/register" className="text-primary hover:underline font-medium">
+                Daftar di sini
+              </Link>
             </p>
           </div>
         </div>

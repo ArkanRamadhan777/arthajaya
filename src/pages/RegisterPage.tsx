@@ -45,7 +45,7 @@ export default function RegisterPage() {
             full_name: data.fullName,
             phone: data.phone,
             address: data.address,
-            role: 'anggota' // Default role for new registrations
+            role: 'anggota'
           }
         }
       })
@@ -80,87 +80,57 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="relative group">
-                <div className="absolute left-3 top-[38px] text-slate-500 group-focus-within:text-primary transition-colors">
-                  <User size={18} />
-                </div>
-                <Input
-                  label="Nama Lengkap"
-                  placeholder="Budi Santoso"
-                  className="pl-10"
-                  error={errors.fullName?.message}
-                  {...register('fullName')}
-                />
-              </div>
-
-              <div className="relative group">
-                <div className="absolute left-3 top-[38px] text-slate-500 group-focus-within:text-primary transition-colors">
-                  <Phone size={18} />
-                </div>
-                <Input
-                  label="Nomor Telepon"
-                  placeholder="08123456789"
-                  className="pl-10"
-                  error={errors.phone?.message}
-                  {...register('phone')}
-                />
-              </div>
-            </div>
-
-            <div className="relative group">
-              <div className="absolute left-3 top-[38px] text-slate-500 group-focus-within:text-primary transition-colors">
-                <Mail size={18} />
-              </div>
               <Input
-                label="Alamat Email"
-                placeholder="nama@contoh.com"
-                className="pl-10"
-                error={errors.email?.message}
-                {...register('email')}
+                label="Nama Lengkap"
+                placeholder="Budi Santoso"
+                leftIcon={<User size={18} />}
+                error={errors.fullName?.message}
+                {...register('fullName')}
+              />
+
+              <Input
+                label="Nomor Telepon"
+                placeholder="08123456789"
+                leftIcon={<Phone size={18} />}
+                error={errors.phone?.message}
+                {...register('phone')}
               />
             </div>
 
-            <div className="relative group">
-              <div className="absolute left-3 top-[38px] text-slate-500 group-focus-within:text-primary transition-colors">
-                <MapPin size={18} />
-              </div>
-              <Input
-                label="Alamat Lengkap"
-                placeholder="Jl. Merdeka No. 123, Jakarta"
-                className="pl-10"
-                error={errors.address?.message}
-                {...register('address')}
-              />
-            </div>
+            <Input
+              label="Alamat Email"
+              placeholder="nama@contoh.com"
+              leftIcon={<Mail size={18} />}
+              error={errors.email?.message}
+              {...register('email')}
+            />
+
+            <Input
+              label="Alamat Lengkap"
+              placeholder="Jl. Merdeka No. 123"
+              leftIcon={<MapPin size={18} />}
+              error={errors.address?.message}
+              {...register('address')}
+            />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="relative group">
-                <div className="absolute left-3 top-[38px] text-slate-500 group-focus-within:text-primary transition-colors">
-                  <Lock size={18} />
-                </div>
-                <Input
-                  label="Kata Sandi"
-                  type="password"
-                  placeholder="••••••••"
-                  className="pl-10"
-                  error={errors.password?.message}
-                  {...register('password')}
-                />
-              </div>
+              <Input
+                label="Kata Sandi"
+                type="password"
+                placeholder="••••••••"
+                leftIcon={<Lock size={18} />}
+                error={errors.password?.message}
+                {...register('password')}
+              />
 
-              <div className="relative group">
-                <div className="absolute left-3 top-[38px] text-slate-500 group-focus-within:text-primary transition-colors">
-                  <Lock size={18} />
-                </div>
-                <Input
-                  label="Ulangi Kata Sandi"
-                  type="password"
-                  placeholder="••••••••"
-                  className="pl-10"
-                  error={errors.confirmPassword?.message}
-                  {...register('confirmPassword')}
-                />
-              </div>
+              <Input
+                label="Ulangi Kata Sandi"
+                type="password"
+                placeholder="••••••••"
+                leftIcon={<Lock size={18} />}
+                error={errors.confirmPassword?.message}
+                {...register('confirmPassword')}
+              />
             </div>
 
             <Button
