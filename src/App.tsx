@@ -55,6 +55,22 @@ function App() {
           />
           <Route path="savings" element={<SavingsPage />} />
           <Route path="loans" element={<LoansPage />} />
+          <Route
+            path="transactions"
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'bendahara']}>
+                <SavingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="reports"
+            element={
+              <ProtectedRoute allowedRoles={['admin']}>
+                <OverviewPage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

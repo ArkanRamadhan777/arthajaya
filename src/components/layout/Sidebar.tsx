@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { 
   LayoutDashboard, 
   Users, 
@@ -23,6 +23,17 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { profile, signOut } = useAuth()
   const [collapsed, setCollapsed] = useState(false)
+  const navigate = useNavigate()
+
+  async function handleLogout() {
+    try {
+      await signOut()
+    } catch (err) {
+      console.error('Logout error:', err)
+    } finally {
+      navigate('/login', { replace: true })
+    }
+  }
 
   const menuItems = [
     { 
@@ -118,7 +129,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
         <div className="p-3 border-t border-white/5">
           <button
-            onClick={() => signOut()}
+            onClick={handleLogout}
             className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-slate-500 hover:bg-red-500/10 hover:text-red-500 transition-all group"
           >
             <LogOut size={22} className="flex-shrink-0" />

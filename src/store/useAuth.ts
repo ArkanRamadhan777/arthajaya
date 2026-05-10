@@ -45,11 +45,21 @@ export const useAuth = create<AuthState>((set) => ({
     })
   },
   signIn: async (email, password) => {
-    await authService.signIn(email, password)
-    // Profile will be set by the onAuthStateChange listener
+    const { user } = await authService.signIn(email, password)
+    if (user) {
+      // Set user + profile synchronously so navigate('/dashboard') works without a race condition
+      try {
+        const profile = await authService.getProfile(user.id)
+        set({ user, profile, loading: false })
+      } catch (err) {
+        // Profile row may not exist yet (trigger race). Still set user so ProtectedRoute passes.
+        console.warn('Profile not found on signIn, falling back to user only:', err)
+        set({ user, profile: null, loading: false })
+      }
+    }
   },
   signOut: async () => {
     await authService.signOut()
-    set({ user: null, profile: null })
+    set({ user: null, profile: null, loading: false })
   }
 }))

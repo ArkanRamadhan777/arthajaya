@@ -19,8 +19,8 @@ export default {
         },
       },
       fontFamily: {
-        heading: ["'Outfit'", "sans-serif"],
-        body: ["'Outfit'", "sans-serif"],
+        heading: ["'Inter'", "sans-serif"],
+        body: ["'Inter'", "sans-serif"],
       },
       backgroundImage: {
         'glass': 'linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02))',
