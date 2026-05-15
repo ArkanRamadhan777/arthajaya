@@ -1,6 +1,7 @@
 import { ArrowRight, Wallet, Zap, BarChart3, Users, Menu, X, Shield, Globe, Activity } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from '../components/ui/FormControls'
+import FinJChat from '../components/ui/FinJChat'
 import { useState } from 'react'
 
 export default function LandingPage() {
@@ -223,27 +224,15 @@ export default function LandingPage() {
               Membangun ekonomi kerakyatan melalui digitalisasi koperasi yang transparan dan akuntabel.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-12 text-sm text-slate-400">
-              <div className="space-y-4">
-                  <p className="font-bold text-white uppercase tracking-widest text-[10px]">Produk</p>
-                  <ul className="space-y-2">
-                      <li><a href="#" className="hover:text-primary transition-colors">Dashboard</a></li>
-                      <li><a href="#" className="hover:text-primary transition-colors">Keamanan</a></li>
-                  </ul>
-              </div>
-              <div className="space-y-4">
-                  <p className="font-bold text-white uppercase tracking-widest text-[10px]">Perusahaan</p>
-                  <ul className="space-y-2">
-                      <li><a href="#" className="hover:text-primary transition-colors">Tentang</a></li>
-                      <li><a href="#" className="hover:text-primary transition-colors">Kontak</a></li>
-                  </ul>
-              </div>
-          </div>
+
         </div>
         <div className="max-w-7xl mx-auto mt-16 md:mt-20 pt-8 border-t border-white/5 text-center text-[10px] md:text-xs text-slate-600">
           &copy; 2026 Koperasi ARTHAJAYA. Seluruh hak dilindungi.
         </div>
       </footer>
+
+      {/* Fin-J Chat Widget */}
+      <FinJChat />
     </div>
   )
 }

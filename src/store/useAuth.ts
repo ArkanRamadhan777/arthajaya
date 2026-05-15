@@ -14,13 +14,19 @@ interface AuthState {
   signOut: () => Promise<void>
 }
 
-export const useAuth = create<AuthState>((set) => ({
+let _initialized = false
+
+export const useAuth = create<AuthState>((set, get) => ({
   user: null,
   profile: null,
   loading: true,
   initialized: false,
   setUser: (user, profile) => set({ user, profile, loading: false }),
   initialize: async () => {
+    // Prevent multiple initializations & duplicate listeners
+    if (_initialized) return
+    _initialized = true
+
     try {
       const { data: { session } } = await supabase.auth.getSession()
       if (session?.user) {
@@ -34,11 +40,15 @@ export const useAuth = create<AuthState>((set) => ({
       set({ user: null, profile: null, loading: false, initialized: true })
     }
 
-    // Listen for auth changes
+    // Listen for auth changes (only once)
     supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
-        const profile = await authService.getProfile(session.user.id)
-        set({ user: session.user, profile, loading: false })
+        try {
+          const profile = await authService.getProfile(session.user.id)
+          set({ user: session.user, profile, loading: false })
+        } catch {
+          set({ user: session.user, profile: null, loading: false })
+        }
       } else if (event === 'SIGNED_OUT') {
         set({ user: null, profile: null, loading: false })
       }
@@ -59,7 +69,12 @@ export const useAuth = create<AuthState>((set) => ({
     }
   },
   signOut: async () => {
-    await authService.signOut()
+    // Clear local state immediately so UI updates without waiting for network
     set({ user: null, profile: null, loading: false })
+    
+    // Call Supabase signOut in background
+    authService.signOut().catch((error) => {
+      console.warn('Supabase signOut background error:', error)
+    })
   }
 }))
